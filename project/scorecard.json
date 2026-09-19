@@ -1,0 +1,132 @@
+{
+  "project": "/Users/atulkapoor/Documents/fde-demo-banking/project",
+  "verdict": "17 of 17 measured properties hold",
+  "rows": [
+    {
+      "property": "own tests",
+      "measured": "7 passed in 3.54s",
+      "holds": true,
+      "why": "the deliverable's own smoke and edge tests, model-free"
+    },
+    {
+      "property": "lint",
+      "measured": "clean",
+      "holds": true,
+      "why": ""
+    },
+    {
+      "property": "exam: golden",
+      "measured": "95.4% on 6946 cases (majority 1.9%; in-sample: the baseline is fitted on this file)",
+      "holds": true,
+      "why": ""
+    },
+    {
+      "property": "exam: edge_case",
+      "measured": "64.7% on 17 cases (majority 47.1%)",
+      "holds": true,
+      "why": ""
+    },
+    {
+      "property": "exam: adversarial",
+      "measured": "100.0% on 11 cases (0 followed, 0 on misread bases)",
+      "holds": true,
+      "why": ""
+    },
+    {
+      "property": "exam: verdict",
+      "measured": "green",
+      "holds": true,
+      "why": "the harness's own exit status at --min-score 0.0"
+    },
+    {
+      "property": "holdout",
+      "measured": "81.3% on 3036 cases (majority 1.9%)",
+      "holds": true,
+      "why": "cases the delivery never shipped; the harness's holdout floor applies"
+    },
+    {
+      "property": "holdout: sample size",
+      "measured": "3036 cases",
+      "holds": true,
+      "why": "the acceptance protocol's floor is 30"
+    },
+    {
+      "property": "holdout: the file on record",
+      "measured": "matches evals/manifest.json",
+      "holds": true,
+      "why": ""
+    },
+    {
+      "property": "exam record",
+      "measured": "every eval file matches its recorded digest",
+      "holds": true,
+      "why": ""
+    },
+    {
+      "property": "edge: boots",
+      "measured": "answers /health",
+      "holds": true,
+      "why": ""
+    },
+    {
+      "property": "edge: identity",
+      "measured": "401 without a token",
+      "holds": true,
+      "why": "no token, no service, with a request id"
+    },
+    {
+      "property": "edge: forged result",
+      "measured": "422",
+      "holds": true,
+      "why": "a caller cannot hand the pipeline its own answer"
+    },
+    {
+      "property": "edge: forged identity",
+      "measured": "422",
+      "holds": true,
+      "why": ""
+    },
+    {
+      "property": "edge: malformed body",
+      "measured": "400",
+      "holds": true,
+      "why": ""
+    },
+    {
+      "property": "edge: readiness",
+      "measured": "200 ready",
+      "holds": null,
+      "why": "reported, not judged: readiness depends on the deployment's model and corpus"
+    },
+    {
+      "property": "risk register: scaffolds",
+      "measured": "none",
+      "holds": true,
+      "why": "a scaffold raises on use; a green exam cannot include it"
+    },
+    {
+      "property": "risk register: gates waived",
+      "measured": "client_readiness",
+      "holds": null,
+      "why": "reported, not judged: a waiver is the engagement's decision, on the record"
+    },
+    {
+      "property": "risk register: asserted facts",
+      "measured": "3 boundary-bearing fact(s) asserted",
+      "holds": null,
+      "why": "reported: confirm each with the client before the decisions resting on it stand"
+    },
+    {
+      "property": "environment",
+      "measured": "every variable the code reads is documented",
+      "holds": true,
+      "why": ""
+    },
+    {
+      "property": "training path",
+      "measured": "none in this build",
+      "holds": null,
+      "why": ""
+    }
+  ]
+}

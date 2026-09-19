@@ -1,0 +1,14 @@
+data_access:
+  note: the bank's support log export returned 9,999 labelled messages (Banking77
+    train split) and 3,079 held by the vendor as a test split
+  at: '2026-09-19'
+security_review:
+  note: customer messages stay in the bank's cloud account; the only outward call
+    is the ticketing API to set a queue; reviewed with the platform team
+  at: '2026-09-19'
+overrides:
+- gate: client_readiness
+  reason: the support lead is named as eval owner and will grade the acceptance sample;
+    interview scheduled
+  at: '2026-09-19'
+  against: Nobody has been named who can say what separates acceptable from excellent.

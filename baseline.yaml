@@ -1,0 +1,8 @@
+volume: {value: 10000, unit: messages/month, definition: "inbound support messages needing a queue (stated by the support lead; the dataset itself is 13,083 messages)"}
+cycle_time_per_unit_seconds: {value: 45, unit: s, definition: "message read to queue assigned, by a triage agent (stated, from the team's own estimate)"}
+labour_hours_per_week: {value: 30, unit: h/week, definition: "triage agents reading and routing (stated)"}
+rework_rate: {value: 0.12, unit: share, definition: "messages re-routed after a wrong first queue (stated, from re-route counts)"}
+exception_rate: {value: 0.03, unit: share, definition: "messages sent to the unknown queue (stated)"}
+error_rate: {value: 0.12, unit: share, definition: "the re-route rate is the first-pass error rate (stated)"}
+business_metric: {value: 26, unit: hours, definition: "median time to first substantive reply (stated)"}
+sampled: {n: 200, method: "one week of re-route logs, read by the support lead (stated, not re-measured here)"}

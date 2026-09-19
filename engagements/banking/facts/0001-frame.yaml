@@ -1,0 +1,46 @@
+session_id: 0001-frame
+respondent:
+  role: system
+  name: null
+facts:
+- dimension: input_format
+  value: text
+  provenance: artifact
+  kind: requirement
+  span:
+  - 198
+  - 207
+  source: brief.md
+  additive: true
+- dimension: output_shape
+  value: decision
+  provenance: artifact
+  kind: requirement
+  span:
+  - 243
+  - 252
+  source: brief.md
+- dimension: existing_iac_tool
+  value: none
+  provenance: artifact
+  kind: environment
+  span:
+  - 418
+  - 425
+  source: brief.md
+- dimension: provisioning_api
+  value: true
+  provenance: artifact
+  kind: environment
+  span:
+  - 806
+  - 819
+  source: brief.md
+- dimension: human_waiting
+  value: 'no'
+  provenance: artifact
+  kind: requirement
+  span:
+  - 966
+  - 983
+  source: brief.md

@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+engagement-prep/
+engagements/banking/artifacts/pairs.jsonl
+engagements/banking/artifacts/holdout.jsonl
+project*/evals/golden.jsonl
+project*/evals/edge_case.jsonl
+project*/evals/adversarial.jsonl
+project*/.implement/
+project*/harness-report.json
+project*/holdout-report.json
+project*/vendor-test-report.json
+project*/scorecard-state/
+project*/.ruff_cache/
+project*/.pytest_cache/

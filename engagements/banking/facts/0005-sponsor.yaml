@@ -1,0 +1,17 @@
+session_id: 0005-sponsor
+respondent:
+  role: sponsor
+  name: head of support
+facts:
+- dimension: query_pattern
+  value: lookup
+  provenance: interview
+  kind: requirement
+- dimension: interpretability_required
+  value: true
+  provenance: interview
+  kind: requirement
+- dimension: latency_budget_ms
+  value: 5000
+  provenance: interview
+  kind: requirement

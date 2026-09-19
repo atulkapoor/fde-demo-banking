@@ -1,0 +1,17 @@
+session_id: 0004-admin
+respondent:
+  role: admin
+  name: platform lead
+facts:
+- dimension: external_systems
+  value: 1
+  provenance: interview
+  kind: requirement
+- dimension: labelled_count
+  value: 9999
+  provenance: interview
+  kind: requirement
+- dimension: sensitivity_present
+  value: true
+  provenance: interview
+  kind: requirement
