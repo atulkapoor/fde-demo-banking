@@ -120,6 +120,16 @@ wrong routes a year that a person would not have made. The 1.0-nat margin
 clears the bar at 18% abstention; the value at that margin is the same
 command against that card.
 
+**The people.** `fde stakeholders` ([`field/stakeholders.txt`](field/stakeholders.txt))
+reads the engagement's people off the record: two of the five roles were
+heard, both voiced by the author (the README's "Facts" row says so, and the
+stakeholder entries repeat it); the eval owner, the user and the skeptic
+were never asked; and every attestation, the waiver and the incident closure
+carry nobody's name, because the drill ran before `--by` existed. A real
+engagement would have a name on each. `fde history`
+([`field/history.txt`](field/history.txt)) is the same record as one page,
+in order.
+
 **What this is and is not.** The deployment is a laptop and the record says
 so in the attestation itself. Both streams are the vendor's public test
 split, not the bank's traffic, and the campaign is a drill: five queues
@@ -171,7 +181,7 @@ holdout from 73.7% to 77.5% in two rounds.
 
 ```bash
 python3 prepare.py                                   # fetches Banking77 into engagement-prep/
-python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.28"
+python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.29"
 venv/bin/fde start banking --statement "Route each inbound customer support message to one of seventy-seven handling queues by intent."
 venv/bin/fde frame banking --file brief.md
 venv/bin/fde samples banking --file engagement-prep/pairs.jsonl
@@ -186,6 +196,7 @@ venv/bin/fde drift banking --journal field/stream-2-card-campaign.log --project 
 venv/bin/fde incident banking close inc-001 --note "what was done"
 venv/bin/fde value banking --project project --hourly-cost 30 --review-share 0.2
 venv/bin/fde outcomes banking --project project
+venv/bin/fde stakeholders banking && venv/bin/fde history banking
 ```
 
 The eval files embed the dataset's text and are not committed; they

@@ -1,0 +1,17 @@
+$ fde stakeholders engagements/banking
+banking: stakeholders
+
+  sponsor     the author, as head of support 1 session(s), 3 fact(s) from head of support
+              owns:                        success criteria, budget, political constraints
+  eval_owner  --                           never heard: fde ask <eng> --role eval_owner
+              owns:                        what separates excellent from acceptable
+  user        --                           never heard: fde ask <eng> --role user
+              owns:                        the real workflow and its exceptions
+  admin       the author, as platform lead 2 session(s), 16 fact(s) from platform lead
+              owns:                        data access, audit, topology, entitlements
+  skeptic     --                           never heard: fde ask <eng> --role skeptic
+              owns:                        why the last attempts failed
+
+unheard: eval_owner, user, skeptic
+
+on the record with nobody's name on it: data_access (2026-09-19); security_review (2026-09-19); deployed (2026-09-20); waiver client_readiness (2026-09-19); closed inc-001 (2026-09-20)  (pass --by next time)

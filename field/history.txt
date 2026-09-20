@@ -1,0 +1,25 @@
+$ fde history engagements/banking
+banking: history
+
+on the record, undated:
+  statement v1: Route each inbound customer support message to one of seventy-seven handling queues by int...
+  session 0001-frame: 5 fact(s) from system
+  session 0002-samples: 1 fact(s) from system
+  session 0003-admin: 13 fact(s) from platform lead
+  session 0004-admin: 3 fact(s) from platform lead
+  session 0005-sponsor: 3 fact(s) from head of support
+  baseline: recorded (baseline.yaml)
+
+  2026-09-19  data access                  the bank's support log export returned 9,999 labelled messages (Banking77 train split) and 3,079 held by the vendor as a test split
+  2026-09-19  security review              customer messages stay in the bank's cloud account; the only outward call is the ticketing API to set a queue; reviewed with the platform team
+  2026-09-19  waived client_readiness      the support lead is named as eval owner and will grade the acceptance sample; interview scheduled
+  2026-09-19  predicted                    11 trigger(s): accountability.graduate, deployment.graduate, evaluation.graduate, governance.graduate, integration.graduate, observability.graduate, perception.graduate, planning.graduate, provisioning.graduate, reasoning.graduate, representation.graduate
+  2026-09-19  stakeholder                  the author, as platform lead (admin)
+  2026-09-19  stakeholder                  the author, as head of support (sponsor)
+  2026-09-20  deployed                     served on the author's laptop over HTTP on 127.0.0.1 by the author, for the field drill; the bank's VPC is not on this record
+  2026-09-20  stage                        start -> pilot
+  2026-09-20  stage                        pilot -> production
+  2026-09-20  stage                        production -> pilot
+  2026-09-20  stage                        pilot -> production
+  2026-09-20  incident inc-001 opened      drift: decision mix
+  2026-09-20  incident inc-001 closed      holdout re-scored: 77.5% on 3,036 cases, unchanged; the shift was in the field's mix (a card-reissue campaign, five card queues only), not in the router; no rebuild; watch the next stream
