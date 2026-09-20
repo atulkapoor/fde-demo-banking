@@ -1,6 +1,6 @@
 # fde-demo-banking
 
-> **The deliverable is in this repo**: [`project/`](project/) — the emitted, implemented, deployable output (pipeline service, deploy assets, runbooks, evals, `ARCHITECTURE.md`, `RISKS.md`, `SCORECARD.md`). Start at [`project/README.md`](project/README.md). The no-agent baseline the framework shipped before the implement loop ran is kept beside it as [`project-baseline-0.1.26/`](project-baseline-0.1.26/).
+> **The deliverable is in this repo**: [`project-0.1.27-agent/`](project-0.1.27-agent/) — the emitted, implemented, deployable output on the current framework (pipeline service, deploy assets, runbooks, evals, `ARCHITECTURE.md`, `RISKS.md`, `SCORECARD.md`). Start at [`project-0.1.27-agent/README.md`](project-0.1.27-agent/README.md). The no-agent baseline the framework shipped is beside it as [`project-0.1.27/`](project-0.1.27/); the earlier 0.1.26 run is kept as [`project-baseline-0.1.26/`](project-baseline-0.1.26/) and [`project/`](project/).
 
 An industry use case through
 [fde-framework](https://github.com/atulkapoor/fde-framework), on real
@@ -16,109 +16,114 @@ The point of this run is the framework's own claim, measured: that what it
 emits is production grade, or says exactly where it is not. Every number
 below is produced by the deliverable's own harness or by
 `fde scorecard`, and the out-of-sample ones are on cases the deliverable
-never saw.
+never saw. Two independent audit passes (the eighth and ninth of the
+framework's series) read this run; what they found is in the framework's
+[changelog](https://github.com/atulkapoor/fde-framework/blob/main/CHANGELOG.md)
+and, where it changed the numbers, below.
 
 ## The engagement, as recorded
 
 | Stage | What happened |
 |---|---|
 | Statement | "Route each inbound customer support message to one of seventy-seven handling queues by intent." |
-| Brief | [`brief.md`](brief.md): free text in, a decision out, inside the bank's cloud account, customer data may not leave, a platform team operates it, nobody waits in real time, one outward system (the ticketing API), every route must be explainable |
-| Facts | `fde frame` read the brief; `fde ask` recorded the platform lead's and the head of support's answers (customer VPC, business hours, role-based access, 500 messages a day at peak, 9,999 labelled messages, personal data present, p95 five seconds, explainability required) |
+| Brief | [`brief.md`](brief.md): free text in, a decision out, inside the bank's cloud account, customer data may not leave, a platform team operates it, nobody waits in real time, one outward system (the ticketing API), every route must be explainable, an unknown queue is fine if rare |
+| Facts | `fde frame` read the brief; the interview answers were **authored by the person running this demo** in the roles of a platform lead and a head of support, from the brief and the dataset (customer VPC, business hours, role-based access, 500 messages a day at peak, 9,999 labelled messages -- the vendor's training split -- personal data present, p95 five seconds, explainability required). There is no real client behind them |
 | Exam | `fde samples` took the 9,999 training queries as verified pairs: 6,946 golden, 17 edge cases (length extremes, rare intents, typical probe bases), 11 adversarial probes, and a 3,036-case holdout the engagement keeps and the delivery never ships. The vendor's own 3,079-query test split is kept as a second, external exam nobody at the engagement chose |
-| Gates | Baseline recorded (operational figures stated by the support lead, marked as stated); data access attested; security review recorded; `client_readiness` waived with the eval owner named |
-| Architecture | `customer-vpc`; reasoning `labelled-decision` (a decision read off text with a labelled history), planning `fixed-sequence`, integration `direct-call` behind `role-scoped-authority` governance and a `decision-log`, evaluation `labelled-metrics`, `terraform-module` provisioning, `structured-logs` |
-
-## What the framework shipped before any agent touched it
-
-The emitted reasoning component is a fitted multinomial naive Bayes over
-the bank's own labelled messages. Its scores, measured by the harness on
-the build under `project-baseline-0.1.26/`:
-
-| Layer | Cases | Score | Reading |
-|---|---|---|---|
-| Golden (in-sample: the baseline is fitted on this file) | 6,946 | 88.8% | majority rate 1.9%, macro-F1 0.876 |
-| Holdout (out-of-sample, never shipped) | 3,036 | **78.5%** | majority 1.9%, macro-F1 0.781 |
-| Vendor test split (external, not the recorded holdout; the harness said so) | 3,079 | **76.2%** | macro-F1 0.753 |
-| Edge cases | 17 | 47.1% | equals the layer's majority rate: the extremes are where the baseline fails |
-| Adversarial probes | 11 | 100% | zero injections followed, on bases the baseline gets right |
-
-`fde scorecard project-baseline-0.1.26 --holdout ...`: **16 of 17
-measured properties hold**; the one that does not is the edge layer.
-The full card is in [`project-baseline-0.1.26/SCORECARD.md`](project-baseline-0.1.26/SCORECARD.md).
-
-## What this run found in the framework
-
-Four defects the framework's own suite could not have shown, each fixed
-and pinned in 0.1.26 before the numbers above were produced:
-
-- **Seventy-seven intents were read as structured records.** The contract
-  inferred a decision from a one-field output only up to five distinct
-  values. The first build had no reasoning component at all, and its
-  exam scored 0.0%. A label set is now recognised by repetition -- every
-  value repeats and there are far fewer values than pairs -- however many
-  labels there are.
-- **The brief's own words were not recognised.** "Routed to a handling
-  queue", "triage", "by intent" now read as a decision.
-- **An intent name written into a message steered the router.**
-  `card_arrival` is the two cue words "card" and "arrival" joined by an
-  underscore; the label-phrase rule only stripped labels joined by spaces.
-  One injection was followed until labels were matched the way they
-  tokenise.
-- **A governance module no other build had emitted failed lint.** The
-  role-scoped-authority template carried two blank lines where one was
-  wanted; the shape is now part of the framework's acceptance suite.
-
-## The implement loop
-
-`fde implement project --holdout engagements/banking/artifacts/holdout.jsonl
---check "python evals/harness.py --min-score 0.92 ..."` -- a bar above
-the shipped baseline's 88.8%, so the agent had to do better than what it
-was handed. The coding agent was Claude Code, reading its brief on stdin,
-inside the loop's fence (the evals, boundary and decision documents are
-hashed and restored if touched).
-
-| Round | What happened |
-|---|---|
-| 1 | Red. The agent rewrote the reasoning component: token features plus word bigrams over the same fitted baseline, the golden score up to 95.4% (in-sample), edge cases up to 64.7%. |
-| 2 | The check cleared its bar -- and the loop refused it: **holdout red**. |
-
-That refusal was the framework's own defect, found by this run and fixed
-in 0.1.26 before the run continued: the loop scored the holdout against
-the golden bar, and the golden score is in-sample wherever the baseline
-is fitted on it. The implementation had in fact raised the holdout from
-78.5% to 81.3%. A second defect surfaced beside it: the loop's check was
-the harness alone, so the round's code carried a lint error behind a
-green exam. The deliverable's own tests -- now including lint -- run
-first as the floor beneath the harness.
-
-The loop was run again on the same project under the corrected gate:
-
-| Round | What happened |
-|---|---|
-| 1 | Red: own tests red (the lint error). The agent fixed the one line. |
-| 2 | **Green**, holdout green, "the file the build recorded". One minute. |
+| Gates | Baseline recorded (operational figures stated by the support lead, every one marked *stated, not measured* on the SLO page); data access attested; security review recorded; `client_readiness` waived with the eval owner named |
+| Architecture | `customer-vpc`; reasoning `labelled-decision` (a decision read off text with a labelled history), planning `fixed-sequence`, integration `direct-call` (not wired: the ticketing call answers 501 by name) behind `role-scoped-authority` governance and a `decision-log`, evaluation `labelled-metrics`, `terraform-module` provisioning, `structured-logs` |
 
 ## What was delivered, measured
 
-`fde scorecard project --holdout engagements/banking/artifacts/holdout.jsonl`:
-**17 of 17 measured properties hold** ([`project/SCORECARD.md`](project/SCORECARD.md)).
+`fde scorecard project-0.1.27-agent --holdout engagements/banking/artifacts/holdout.jsonl --external engagement-prep/vendor-test.jsonl`,
+at the two abstain margins ([`SCORECARD.md`](project-0.1.27-agent/SCORECARD.md),
+[`SCORECARD-margin-1.0.md`](project-0.1.27-agent/SCORECARD-margin-1.0.md)):
 
-| | Shipped baseline (no agent) | After the implement loop |
-|---|---|---|
-| Golden, in-sample | 88.8% | 95.4% |
-| **Holdout, 3,036 cases never shipped** | 78.5% | **81.3%** (majority 1.9%, macro-F1 0.79) |
-| **Vendor test split, 3,079 cases** | 76.2% | **80.2%** (macro-F1 0.800) |
-| Edge cases, 17 | 47.1% | 64.7% |
-| Adversarial probes, 11 | 100% | 100%, none followed |
-| Lint, own tests, exam record, edge probes, environment | hold | hold |
+| | Shipped baseline, no agent (`project-0.1.27`) | After the implement loop (`project-0.1.27-agent`) | Same, at a 1.0-nat abstain margin |
+|---|---|---|---|
+| Scorecard | 21 of 23 rows hold | 22 of 23 | 22 of 24 |
+| Golden, in-sample | 84.1% (abstained 10%) | 91.6% (abstained 4.3%) | -- |
+| **Holdout, 3,036 cases never shipped** | 73.7%, abstaining 16.1%, **87.9% on the answered** | 77.5%, abstaining 10.5%, **86.6% on the answered** | 73.8%, abstaining 18.2%, **90.2% on the answered** |
+| **Vendor test split, 3,079 cases (external exam)** | 72.2% | **75.8%** | 71.6% |
+| Beats the bank's recorded 88% first-pass accuracy on the answered | no, by 0.1 point | no, by 1.4 points | **yes** |
+| Generalisation gap (golden in-sample minus holdout) | 10.4 points | 14.2 points | -- |
+| Adversarial probes, 11 | 10 of 11, one abstained under mutation | 11 of 11, none followed | -- |
+| A valid request through the edge answers, and says why | yes | yes | yes |
 
-Reading it honestly: an eighty-percent intent router over seventy-seven
-queues, with every route explained by the scores it was made on, is what
-a bag-of-words baseline plus one agent round buys. The published
-literature on this dataset reaches the low nineties with fine-tuned
-encoders; the framework's fine-tuning path is the next step, and the
-holdout and the vendor split are where it would be measured. The
-baseline's stated operational figures are marked as stated, not
-measured, on the SLO page; the residency and hosting facts came from an
-interview and are marked asserted in `RISKS.md`.
+Reading it honestly:
+
+- **This is an assist-mode router, not an autonomous one.** At the
+  default margin the deliverable routes 89% of messages and is right on
+  86.6% of those, short of the bank's own first-pass bar. At a one-nat
+  margin it hands 18% of messages to a person and is right on 90.2% of the
+  rest, which clears the bar. The card says which, and neither number
+  is quoted without its abstain share.
+- **The out-of-sample numbers are the numbers.** The golden score is
+  in-sample (the baseline is fitted on that file) and the card marks it
+  so; the holdout and the vendor split are what the system can do on
+  messages it never saw. The gap between them is on the card.
+- **What the agent changed.** One file: word bigrams over the same
+  fitted baseline and a smaller smoothing constant, chosen by
+  cross-validation on golden (its own docstring). Under the loop's fence
+  it could not touch the exam, the tests, the contract or the boundary,
+  and its round was refused once for a lint error the tests caught.
+- **The literature gap.** A TF-IDF and logistic-regression baseline
+  reaches about 85% on this dataset; fine-tuned encoders reach the low
+  nineties. This deliverable is a bag-of-words baseline plus one agent
+  round, and the framework's fine-tuning path is the next step, measured
+  on the same holdout and vendor split.
+
+## What this run found in the framework
+
+Six defects the framework's own suite could not have shown, each fixed
+and pinned in 0.1.26 before the first numbers were quoted, and six more
+from the ninth audit pass, fixed in 0.1.27:
+
+- Seventy-seven intents were read as structured records, so the first
+  build had no reasoning component and an exam at 0.0%.
+- The brief's own words -- "routed to a handling queue", "by intent" --
+  were not recognised as a decision.
+- An intent name written into a message steered the router, because
+  underscore-joined labels were not stripped; stripping every mention
+  then cost two points on customers stating the intent in their own
+  words, so a label is now stripped only where it is dictated.
+- A governance module no other build had emitted failed lint.
+- The implement loop scored the holdout against the in-sample golden bar
+  and refused a better implementation; it never ran the deliverable's own
+  tests; its fence did not cover the tests or the contract.
+- The router routed a greeting, gibberish and a French message to the
+  commonest queue at a 0.02-nat margin; it now abstains below a margin,
+  and every routed answer carries the top labels, the margin and the
+  tokens that carried it.
+- The scorecard scored a component that memorised the exam files at
+  17 of 17; it now carries a generalisation-gap row, an external exam,
+  and the engagement's own error-rate bar.
+
+## The implement loop
+
+Both runs are logged beside the projects
+([`implement-log-run1-0.1.26.md`](implement-log-run1-0.1.26.md),
+[`implement-log-run2-0.1.26.md`](implement-log-run2-0.1.26.md),
+[`project-0.1.27-agent/ops/implement-log.md`](project-0.1.27-agent/ops/implement-log.md)).
+The coding agent was Claude Code reading its brief on stdin. On 0.1.26
+the first run cleared its bar and was refused as "memorised" because the
+holdout inherited the in-sample bar (a framework defect, fixed); the
+second run went red on a lint error the deliverable's own tests caught,
+then green. On 0.1.27, under the corrected gate, the loop took the
+holdout from 73.7% to 77.5% in two rounds.
+
+## Reproduce it
+
+```bash
+python3 prepare.py                                   # fetches Banking77 into engagement-prep/
+python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.27"
+venv/bin/fde start banking --statement "Route each inbound customer support message to one of seventy-seven handling queues by intent."
+venv/bin/fde frame banking --file brief.md
+venv/bin/fde samples banking --file engagement-prep/pairs.jsonl
+venv/bin/fde baseline banking --file baseline.yaml   # then data-access, security-review, waive, ask (see engagements/banking/)
+venv/bin/fde build banking --out project
+venv/bin/fde scorecard project --holdout engagements/banking/artifacts/holdout.jsonl --external engagement-prep/vendor-test.jsonl
+```
+
+The eval files embed the dataset's text and are not committed; they
+regenerate from `prepare.py` and a build, and every digest is in each
+project's `evals/manifest.json`.
