@@ -4,7 +4,7 @@
 
 | Property | Measured | Holds |
 |---|---|---|
-| own tests | 7 passed in 3.43s | yes |
+| own tests | 7 passed in 3.47s | yes |
 | lint | clean | yes |
 | exam: golden | 91.6% on 6946 cases (majority 1.9%; abstained 4.3%, 95.7% on the answered; in-sample: the baseline is fitted on this file) | yes |
 | exam: edge_case | 52.9% on 17 cases (majority 47.1%; abstained 41.2%, 90.0% on the answered) | yes |

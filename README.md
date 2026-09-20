@@ -40,7 +40,7 @@ at the two abstain margins ([`SCORECARD.md`](project-0.1.27-agent/SCORECARD.md),
 
 | | Shipped baseline, no agent (`project-0.1.27`) | After the implement loop (`project-0.1.27-agent`) | Same, at a 1.0-nat abstain margin |
 |---|---|---|---|
-| Scorecard | 21 of 23 rows hold | 22 of 23 | 22 of 24 |
+| Scorecard | 22 of 24 rows hold | 23 of 24 | 22 of 24 |
 | Golden, in-sample | 84.1% (abstained 10%) | 91.6% (abstained 4.3%) | -- |
 | **Holdout, 3,036 cases never shipped** | 73.7%, abstaining 16.1%, **87.9% on the answered** | 77.5%, abstaining 10.5%, **86.6% on the answered** | 73.8%, abstaining 18.2%, **90.2% on the answered** |
 | **Vendor test split, 3,079 cases (external exam)** | 72.2% | **75.8%** | 71.6% |
@@ -71,6 +71,62 @@ Reading it honestly:
   nineties. This deliverable is a bag-of-words baseline plus one agent
   round, and the framework's fine-tuning path is the next step, measured
   on the same holdout and vendor split.
+
+## The operating loop, closed
+
+0.1.28 carries the record past the build, and this repository is the first
+place the whole loop has run in public. Everything below is in
+[`field/loop.txt`](field/loop.txt) exactly as the commands printed it; the
+record it wrote is [`engagements/banking/lifecycle.jsonl`](engagements/banking/lifecycle.jsonl),
+[`engagements/banking/incidents.jsonl`](engagements/banking/incidents.jsonl) and
+[`project-0.1.27-agent/VALUE.md`](project-0.1.27-agent/VALUE.md).
+
+**The field.** The delivered build (`project-0.1.27-agent`) was booted as
+its unit would boot it, on the author's laptop, and two streams were sent
+through it over HTTP. Its journal -- the `answered` lines the service
+writes for every request -- is what the record reads, and both journals are
+committed ([`field/`](field/); they carry the decision, the margin and the
+cue tokens, never the message).
+
+| Stream | Requests | Abstained | Right on the answered | Drift |
+|---|---|---|---|---|
+| 1: the vendor's test split, 3,079 messages across all 77 queues ([summary](field/stream-1-summary.json)) | 3,079, all 200 | 11.5% | 85.7% (75.8% overall, the card's external-exam figure to the decimal) | none: mix distance 0.08 from the golden, abstention 11.5% against 10.5% on the holdout |
+| 2: a card-reissue campaign -- 200 messages from five card queues only ([summary](field/stream-2-summary.json)) | 200, all 200 | 12.0% | 81.8% | **decision mix**: distance 0.81 from the golden; `inc-001` opened |
+
+**The trail.** `fde stage` computed each stage off the record and appended
+every transition:
+
+| Transition | Why |
+|---|---|
+| start -> pilot | gates pass, 9,999 pairs seeded, a 3,036-case holdout drawn, data access attested, a build with its exam, a scorecard whose out-of-sample rows hold, the edge answering a valid request |
+| pilot -> production | `fde deployed` attested where it runs: *the author's laptop, over HTTP on 127.0.0.1, for the field drill; the bank's VPC is not on this record* |
+| production -> pilot | `fde drift` on stream 2 opened `inc-001` (decision mix); an open incident pulls production back |
+| pilot -> production | the holdout was scored again as the incident asked (77.5% on 3,036 cases, unchanged, regression from the last card: none), and `inc-001` was closed by name with what was done: the shift was in the field's mix, not in the router; no rebuild |
+
+`fde outcomes` reads the same trail back: 4 transitions, 2 implement rounds
+logged, 0 reversals, 1 incident opened and closed, no outcome recorded.
+
+**The value.** `fde value` wrote the business case from the recorded
+baseline and the holdout row, at an assumed 30 an hour, 160 hours to
+build, 300 a month to run and a person re-checking 20% of automated
+routes: 1,074 hours and 32,220 a year saved, payback in 2.0 months, the
+answered accuracy 85.3% to 87.8% at 95%. The document names what it rests
+on before the total. Four lines are *stated*, not measured, because the
+bank's own figures were (annual volume, cycle time, labour, the first-pass
+error rate); four are *assumed* by the caller. And one line is the honest
+one: at the default margin the router's 13.4% error on what it routes is
+above the bank's stated 12%, so *net errors* is positive -- about 1,500
+wrong routes a year that a person would not have made. The 1.0-nat margin
+clears the bar at 18% abstention; the value at that margin is the same
+command against that card.
+
+**What this is and is not.** The deployment is a laptop and the record says
+so in the attestation itself. Both streams are the vendor's public test
+split, not the bank's traffic, and the campaign is a drill: five queues
+chosen to move the mix the way a real campaign week would. The whole loop
+ran in one day, so days-to-pilot reads 0. No adoption figure exists because
+no client exists, and the stage stops at production for that reason rather
+than pretending past it.
 
 ## What this run found in the framework
 
@@ -115,13 +171,21 @@ holdout from 73.7% to 77.5% in two rounds.
 
 ```bash
 python3 prepare.py                                   # fetches Banking77 into engagement-prep/
-python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.27"
+python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.28"
 venv/bin/fde start banking --statement "Route each inbound customer support message to one of seventy-seven handling queues by intent."
 venv/bin/fde frame banking --file brief.md
 venv/bin/fde samples banking --file engagement-prep/pairs.jsonl
 venv/bin/fde baseline banking --file baseline.yaml   # then data-access, security-review, waive, ask (see engagements/banking/)
 venv/bin/fde build banking --out project
 venv/bin/fde scorecard project --holdout engagements/banking/artifacts/holdout.jsonl --external engagement-prep/vendor-test.jsonl
+
+# the operating loop: boot the service, send traffic, keep its journal (stderr), then
+venv/bin/fde stage banking --project project
+venv/bin/fde deployed banking --note "where it runs and who put it there"
+venv/bin/fde drift banking --journal field/stream-2-card-campaign.log --project project
+venv/bin/fde incident banking close inc-001 --note "what was done"
+venv/bin/fde value banking --project project --hourly-cost 30 --review-share 0.2
+venv/bin/fde outcomes banking --project project
 ```
 
 The eval files embed the dataset's text and are not committed; they

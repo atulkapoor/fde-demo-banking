@@ -4,19 +4,19 @@
 
 | Property | Measured | Holds |
 |---|---|---|
-| own tests | 7 passed in 3.51s | yes |
+| own tests | 7 passed in 3.71s | yes |
 | lint | clean | yes |
-| exam: golden | 78.9% on 6946 cases (majority 1.9%; abstained 18.1%, 96.3% on the answered; in-sample: the baseline is fitted on this file) | yes |
-| exam: edge_case | 35.3% on 17 cases (majority 47.1%; abstained 64.7%, 100.0% on the answered) | **no** |
-| exam: adversarial | 72.7% on 11 cases (0 followed, 0 on misread bases, 3 abstained under mutation) | yes |
+| exam: golden | 84.1% on 6946 cases (majority 1.9%; abstained 10.0%, 93.5% on the answered; in-sample: the baseline is fitted on this file) | yes |
+| exam: edge_case | 47.1% on 17 cases (majority 47.1%; abstained 47.1%, 88.9% on the answered) | **no** |
+| exam: adversarial | 90.9% on 11 cases (0 followed, 0 on misread bases, 1 abstained under mutation) | yes |
 | exam: verdict | green | yes |
 | exam record | every eval file matches its recorded digest | yes |
-| holdout | 68.5% on 3036 cases (majority 1.9%; abstained 25.9%, 92.4% on the answered) | yes |
+| holdout | 73.7% on 3036 cases (majority 1.9%; abstained 16.1%, 87.9% on the answered) | yes |
 | holdout: sample size | 3036 cases | yes |
 | holdout: the file on record | matches evals/manifest.json | yes |
-| generalisation gap | golden 78.9% - holdout 68.5% = +10.4% | yes |
-| beats the baseline error rate | 92.4% on the answered against a recorded first-pass accuracy of 88.0%, abstaining 25.9% | yes |
-| external exam | 65.6% on 3079 cases (majority 1.3%) | yes |
+| generalisation gap | golden 84.1% - holdout 73.7% = +10.4% | yes |
+| beats the baseline error rate | 87.9% on the answered against a recorded first-pass accuracy of 88.0%, abstaining 16.1% | **no** |
+| external exam | 72.2% on 3079 cases (majority 1.3%) | yes |
 | edge: boots | answers /health | yes |
 | edge: identity | 401 without a token | yes |
 | edge: forged result | 422 | yes |
@@ -30,12 +30,12 @@
 | risk register: asserted facts | 2 boundary-bearing fact(s) asserted | n/a |
 | environment | every variable the code reads is documented | yes |
 | training path | none in this build | n/a |
-| regression from the last card | exam: golden 84.1% -> 78.9%; holdout 73.7% -> 68.5% | **no** |
+| regression from the last card | none | yes |
 
 ## Not holding
 
-- **exam: edge_case**: 35.3% on 17 cases (majority 47.1%; abstained 64.7%, 100.0% on the answered)
-- **regression from the last card**: exam: golden 84.1% -> 78.9%; holdout 73.7% -> 68.5% -- tolerance 2%
+- **exam: edge_case**: 47.1% on 17 cases (majority 47.1%; abstained 47.1%, 88.9% on the answered)
+- **beats the baseline error rate**: 87.9% on the answered against a recorded first-pass accuracy of 88.0%, abstaining 16.1% -- evals/acceptance.md: the baseline's error rate is the number to beat; measured on what the system answered, with the abstained share beside it
 
 ## Notes
 
@@ -44,7 +44,6 @@
 - holdout: cases the delivery never shipped; the harness's holdout floor applies
 - holdout: sample size: the protocol's floor for a blind sample is 30; the acceptance run itself is sized to the golden set
 - generalisation gap: past 20% the golden score describes the exam, not the system; a component that reads the holdout file defeats this row, which is what --external is for
-- beats the baseline error rate: evals/acceptance.md: the baseline's error rate is the number to beat; measured on what the system answered, with the abstained share beside it
 - edge: identity: no token, no service, with a request id
 - edge: forged result: a caller cannot hand the pipeline its own answer
 - edge: a valid request: the exam's own first case through the edge; refusals alone proved a service that failed every real request
@@ -53,3 +52,4 @@
 - risk register: scaffolds: a scaffold raises on use; a green exam cannot include it
 - risk register: gates waived: reported, not judged: a waiver is the engagement's decision, on the record
 - risk register: asserted facts: reported: confirm each with the client before the decisions resting on it stand
+- regression from the last card: tolerance 2%

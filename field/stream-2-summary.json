@@ -1,0 +1,15 @@
+{
+  "cases": 200,
+  "status_codes": {
+    "200": 200
+  },
+  "answered": 200,
+  "abstained": 24,
+  "abstain_rate": 0.12,
+  "correct_on_answered": 144,
+  "accuracy_on_answered": 0.8182,
+  "accuracy_overall": 0.72,
+  "distinct_labels": 19,
+  "seconds": 0.1,
+  "requests_per_second": 1336.1
+}

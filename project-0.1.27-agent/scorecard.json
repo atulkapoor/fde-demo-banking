@@ -4,7 +4,7 @@
   "rows": [
     {
       "property": "own tests",
-      "measured": "7 passed in 3.43s",
+      "measured": "7 passed in 3.47s",
       "holds": true,
       "why": "the deliverable's own smoke and edge tests, model-free"
     },

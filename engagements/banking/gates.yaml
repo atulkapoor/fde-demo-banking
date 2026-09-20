@@ -12,3 +12,7 @@ overrides:
     interview scheduled
   at: '2026-09-19'
   against: Nobody has been named who can say what separates acceptable from excellent.
+deployed:
+  note: served on the author's laptop over HTTP on 127.0.0.1 by the author, for the
+    field drill; the bank's VPC is not on this record
+  at: '2026-09-20'
