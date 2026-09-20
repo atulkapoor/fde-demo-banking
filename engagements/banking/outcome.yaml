@@ -1,0 +1,10 @@
+stop_when:
+- answered_accuracy < 0.88
+- abstain_rate > 0.25
+stop_when_recorded:
+- condition: answered_accuracy < 0.88
+  at: '2026-09-21'
+  by: the author
+- condition: abstain_rate > 0.25
+  at: '2026-09-21'
+  by: the author

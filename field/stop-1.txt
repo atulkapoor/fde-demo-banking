@@ -1,0 +1,40 @@
+$ fde stop-when engagements/banking --when answered_accuracy < 0.88 --when abstain_rate > 0.25 --by the author --project project-0.1.27-agent
+recorded 2 stop condition(s)
+STOP  answered_accuracy < 0.88             measured 0.866
+  ok  abstain_rate > 0.25                  measured 0.105
+
+STOP: 1 condition(s) triggered. The stage is stopped until the condition is restated with a reason, the build is changed and scored again, or the case is captured (fde retro).
+[exit 1]
+
+$ fde stage engagements/banking --project project-0.1.27-agent --registry /Users/atulkapoor/Documents/fde-framework/framework
+banking: stopped
+
+  ok discovery
+       ok a problem statement: Route each inbound customer support message to one of seventy-seven handling que...
+  -- validation
+       NO the gates pass or are waived on the record: blocked by outcome_contract
+       ok the exam is seeded from the client's pairs: 9999 pairs
+       ok a holdout the delivery never ships: 3036 cases
+       ok data access attested: the bank's support log export returned 9,999 labelled messages (Banking77 train 
+  ok prototype
+       ok a build with its exam record: project-0.1.27-agent
+  ok pilot
+       ok a scorecard on record: scorecard.json
+       ok the out-of-sample rows hold: 77.5% on 3036 cases (majority 1.9%; abstained 10.5%, 86.6% on the answered)
+       ok the edge answers a valid request: 200 "card_arrival"
+  ok production
+       ok a deployment on record: served on the author's laptop over HTTP on 127.0.0.1 by the author, for the fiel
+       ok no open incident: none open
+  -- adoption
+       NO an adoption figure measured in the field: none: fde outcome <eng> --metric adoption=<value>
+  -- retrospective
+       NO a retrospective captured as a case: none: fde retro
+
+STOPPED by: answered_accuracy < 0.88 (measured 0.866)
+  restate the condition with a reason, change the build and score it again, or capture the case (fde retro)
+
+to reach validation: the gates pass or are waived on the record -- blocked by outcome_contract
+
+recorded: production -> stopped (lifecycle.jsonl)
+[exit 0]
+

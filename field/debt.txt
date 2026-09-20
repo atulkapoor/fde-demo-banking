@@ -1,12 +1,12 @@
 $ fde debt engagements/banking
-banking: decision debt as of 2026-09-20
+banking: decision debt as of 2026-09-21
 
   open (13)
     waiver         client_readiness: the support lead is named as eval owner and will grade the acceptance sample; interview scheduled
-                   owner: eval_owner  1 day(s)
+                   owner: eval_owner  2 day(s)
                    next: meet the gate, or restate the waiver if it still holds
     waiver         outcome_contract: the brief names the number (median time to first substantive reply, 26 hours, stated by the support lead) but nobody at the bank has set a target, and there is no bank: this is a public demonstration on the vendor's dataset
-                   owner: the author  0 day(s)
+                   owner: the author  1 day(s)
                    next: meet the gate, or restate the waiver if it still holds
     stated         accelerator = none: said by platform lead (admin), measurable but not measured
                    owner: admin
@@ -18,19 +18,19 @@ banking: decision debt as of 2026-09-20
                    owner: admin
                    next: measure it: fde scan, or a document the client owns
     unsigned       data_access (2026-09-19)
-                   owner: unsigned  1 day(s)
+                   owner: unsigned  2 day(s)
                    next: re-record with --by, or leave it and know it
     unsigned       security_review (2026-09-19)
-                   owner: unsigned  1 day(s)
+                   owner: unsigned  2 day(s)
                    next: re-record with --by, or leave it and know it
     unsigned       deployed (2026-09-20)
-                   owner: unsigned  0 day(s)
-                   next: re-record with --by, or leave it and know it
-    unsigned       waiver client_readiness (2026-09-19)
                    owner: unsigned  1 day(s)
                    next: re-record with --by, or leave it and know it
+    unsigned       waiver client_readiness (2026-09-19)
+                   owner: unsigned  2 day(s)
+                   next: re-record with --by, or leave it and know it
     unsigned       closed inc-001 (2026-09-20)
-                   owner: unsigned  0 day(s)
+                   owner: unsigned  1 day(s)
                    next: re-record with --by, or leave it and know it
     unheard        eval_owner has never been asked
                    owner: eval_owner

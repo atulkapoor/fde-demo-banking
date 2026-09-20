@@ -1,0 +1,46 @@
+$ fde stop-when engagements/banking --project project-0.1.27-agent
+  ok  answered_accuracy < 0.88             measured 0.902
+  ok  abstain_rate > 0.25                  measured 0.182
+[exit 0]
+
+$ fde stage engagements/banking --project project-0.1.27-agent --registry /Users/atulkapoor/Documents/fde-framework/framework
+banking: production
+
+  ok discovery
+       ok a problem statement: Route each inbound customer support message to one of seventy-seven handling que...
+  ok validation
+       ok the gates pass or are waived on the record: all pass
+       ok the exam is seeded from the client's pairs: 9999 pairs
+       ok a holdout the delivery never ships: 3036 cases
+       ok data access attested: the bank's support log export returned 9,999 labelled messages (Banking77 train 
+  ok prototype
+       ok a build with its exam record: project-0.1.27-agent
+  ok pilot
+       ok a scorecard on record: scorecard.json
+       ok the out-of-sample rows hold: 73.8% on 3036 cases (majority 1.9%; abstained 18.2%, 90.2% on the answered)
+       ok the edge answers a valid request: 200 "card_arrival"
+  ok production
+       ok a deployment on record: served on the author's laptop over HTTP on 127.0.0.1 by the author, for the fiel
+       ok no open incident: none open
+  -- adoption
+       NO an adoption figure measured in the field: none: fde outcome <eng> --metric adoption=<value>
+  -- retrospective
+       NO a retrospective captured as a case: none: fde retro
+
+to reach adoption: an adoption figure measured in the field -- none: fde outcome <eng> --metric adoption=<value>
+
+recorded: stopped -> production (lifecycle.jsonl)
+[exit 0]
+
+$ fde outcomes engagements/banking --project project-0.1.27-agent
+  stage                      production
+  transitions                6
+  days_to_pilot              0
+  implement_rounds_logged    2
+  architecture_reversals     0
+  incidents_opened           1
+  incidents_open             0
+  outcomes_recorded          {}
+  first_recorded             2026-09-20
+[exit 0]
+

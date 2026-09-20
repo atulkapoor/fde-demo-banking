@@ -35,8 +35,9 @@ and, where it changed the numbers, below.
 ## What was delivered, measured
 
 `fde scorecard project-0.1.27-agent --holdout engagements/banking/artifacts/holdout.jsonl --external engagement-prep/vendor-test.jsonl`,
-at the two abstain margins ([`SCORECARD.md`](project-0.1.27-agent/SCORECARD.md),
-[`SCORECARD-margin-1.0.md`](project-0.1.27-agent/SCORECARD-margin-1.0.md)):
+at the two abstain margins ([`SCORECARD-margin-0.5.md`](project-0.1.27-agent/SCORECARD-margin-0.5.md)
+at the default margin, [`SCORECARD.md`](project-0.1.27-agent/SCORECARD.md) at the
+1.0-nat margin the deployment now ships, since the stop drill below):
 
 | | Shipped baseline, no agent (`project-0.1.27`) | After the implement loop (`project-0.1.27-agent`) | Same, at a 1.0-nat abstain margin |
 |---|---|---|---|
@@ -102,23 +103,44 @@ every transition:
 | pilot -> production | `fde deployed` attested where it runs: *the author's laptop, over HTTP on 127.0.0.1, for the field drill; the bank's VPC is not on this record* |
 | production -> pilot | `fde drift` on stream 2 opened `inc-001` (decision mix); an open incident pulls production back |
 | pilot -> production | the holdout was scored again as the incident asked (77.5% on 3,036 cases, unchanged, regression from the last card: none), and `inc-001` was closed by name with what was done: the shift was in the field's mix, not in the router; no rebuild |
+| production -> stopped | `fde stop-when`: the author's condition `answered_accuracy < 0.88` (the bank's stated first-pass accuracy) fired against the default-margin card, 86.6% on the answered ([`field/stop-1.txt`](field/stop-1.txt)) |
+| stopped -> production | the deployment's `ABSTAIN_MARGIN` set to 1.0 and the build scored again at that margin ([`field/rescore-margin-1.0.txt`](field/rescore-margin-1.0.txt)): 90.2% on the answered, abstaining 18.2%; both conditions clear ([`field/stop-2.txt`](field/stop-2.txt)) |
 
-`fde outcomes` reads the same trail back: 4 transitions, 2 implement rounds
+`fde outcomes` reads the same trail back: 6 transitions, 2 implement rounds
 logged, 0 reversals, 1 incident opened and closed, no outcome recorded.
 
 **The value.** `fde value` wrote the business case from the recorded
-baseline and the holdout row, at an assumed 30 an hour, 160 hours to
+baseline and the shipped card, at an assumed 30 an hour, 160 hours to
 build, 300 a month to run and a person re-checking 20% of automated
-routes: 1,074 hours and 32,220 a year saved, payback in 2.0 months, the
-answered accuracy 85.3% to 87.8% at 95%. The document names what it rests
+routes: 982 hours and 29,448 a year saved, payback in 2.2 months, the
+answered accuracy 89.0% to 91.3% at 95%. The document names what it rests
 on before the total. Four lines are *stated*, not measured, because the
 bank's own figures were (annual volume, cycle time, labour, the first-pass
-error rate); four are *assumed* by the caller. And one line is the honest
-one: at the default margin the router's 13.4% error on what it routes is
-above the bank's stated 12%, so *net errors* is positive -- about 1,500
-wrong routes a year that a person would not have made. The 1.0-nat margin
-clears the bar at 18% abstention; the value at that margin is the same
-command against that card.
+error rate); four are *assumed* by the caller. *Net errors* is now
+negative -- about 2,160 fewer wrong routes a year than the people made --
+because the shipped margin routes only what it is 90.2% right on. At the
+default margin the same line was positive (13.4% error against the bank's
+stated 12%), which is what the stop condition below caught.
+
+**The stop.** 0.1.32 made stop a legitimate outcome, and the record here
+has been stopped once. Two conditions went on it, the author's, read off
+the brief: `answered_accuracy < 0.88`, the bank's stated first-pass
+accuracy, and `abstain_rate > 0.25`, because a message routed to unknown
+"is fine as long as it is rare". Against the card at the default 0.5-nat
+margin the first fired -- 86.6% on the answered -- and `fde stage`
+recorded production -> stopped ([`field/stop-1.txt`](field/stop-1.txt)).
+The answer was a configuration, not a rebuild: the deployment now ships
+`ABSTAIN_MARGIN=1.0` (`deploy/env.example`), the build was scored again
+at that margin ([`field/rescore-margin-1.0.txt`](field/rescore-margin-1.0.txt)),
+and both conditions clear ([`field/stop-2.txt`](field/stop-2.txt)), so the
+stage returned to production. The card's own regression row says **no**
+-- holdout 77.5% -> 73.8% -- because more messages now go to a person;
+that is the trade the condition asked for, and the card says it rather
+than hiding it. The first run of this drill also found a framework
+defect: recording stop conditions created a partial contract file, the
+eighth gate's reason changed, the waiver granted against the old reason
+lapsed, and the stage dropped to discovery. 0.1.33 fixed it, with a test,
+and the one stray transition was removed from the trail.
 
 **The people.** `fde stakeholders` ([`field/stakeholders.txt`](field/stakeholders.txt))
 reads the engagement's people off the record: two of the five roles were
@@ -193,7 +215,7 @@ holdout from 73.7% to 77.5% in two rounds.
 
 ```bash
 python3 prepare.py                                   # fetches Banking77 into engagement-prep/
-python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.31"
+python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.33"
 venv/bin/fde start banking --statement "Route each inbound customer support message to one of seventy-seven handling queues by intent."
 venv/bin/fde frame banking --file brief.md
 venv/bin/fde samples banking --file engagement-prep/pairs.jsonl
@@ -210,6 +232,7 @@ venv/bin/fde value banking --project project --hourly-cost 30 --review-share 0.2
 venv/bin/fde outcomes banking --project project
 venv/bin/fde stakeholders banking && venv/bin/fde history banking
 venv/bin/fde debt banking                # what nobody has settled, with an owner and an age
+venv/bin/fde stop-when banking --when "answered_accuracy < 0.88" --project project   # exit 1 and a STOP stage when it fires
 ```
 
 The eval files embed the dataset's text and are not committed; they

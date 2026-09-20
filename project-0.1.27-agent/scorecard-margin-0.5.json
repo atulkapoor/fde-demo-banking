@@ -1,10 +1,10 @@
 {
   "project": "/Users/atulkapoor/Documents/fde-demo-banking/project-0.1.27-agent",
-  "verdict": "22 of 24 measured properties hold",
+  "verdict": "23 of 24 measured properties hold",
   "rows": [
     {
       "property": "own tests",
-      "measured": "7 passed in 3.46s",
+      "measured": "7 passed in 3.47s",
       "holds": true,
       "why": "the deliverable's own smoke and edge tests, model-free"
     },
@@ -16,14 +16,14 @@
     },
     {
       "property": "exam: golden",
-      "measured": "89.2% on 6946 cases (majority 1.9%; abstained 8.4%, 97.3% on the answered; in-sample: the baseline is fitted on this file)",
+      "measured": "91.6% on 6946 cases (majority 1.9%; abstained 4.3%, 95.7% on the answered; in-sample: the baseline is fitted on this file)",
       "holds": true,
       "why": ""
     },
     {
       "property": "exam: edge_case",
-      "measured": "47.1% on 17 cases (majority 47.1%; abstained 47.1%, 88.9% on the answered)",
-      "holds": false,
+      "measured": "52.9% on 17 cases (majority 47.1%; abstained 41.2%, 90.0% on the answered)",
+      "holds": true,
       "why": ""
     },
     {
@@ -46,7 +46,7 @@
     },
     {
       "property": "holdout",
-      "measured": "73.8% on 3036 cases (majority 1.9%; abstained 18.2%, 90.2% on the answered)",
+      "measured": "77.5% on 3036 cases (majority 1.9%; abstained 10.5%, 86.6% on the answered)",
       "holds": true,
       "why": "cases the delivery never shipped; the harness's holdout floor applies"
     },
@@ -64,19 +64,19 @@
     },
     {
       "property": "generalisation gap",
-      "measured": "golden 89.2% - holdout 73.8% = +15.4%",
+      "measured": "golden 91.6% - holdout 77.5% = +14.2%",
       "holds": true,
       "why": "past 20% the golden score describes the exam, not the system; a component that reads the holdout file defeats this row, which is what --external is for"
     },
     {
       "property": "beats the baseline error rate",
-      "measured": "90.2% on the answered against a recorded first-pass accuracy of 88.0%, abstaining 18.2%",
-      "holds": true,
+      "measured": "86.6% on the answered against a recorded first-pass accuracy of 88.0%, abstaining 10.5%",
+      "holds": false,
       "why": "evals/acceptance.md: the baseline's error rate is the number to beat; measured on what the system answered, with the abstained share beside it"
     },
     {
       "property": "external exam",
-      "measured": "71.6% on 3079 cases (majority 1.3%)",
+      "measured": "75.8% on 3079 cases (majority 1.3%)",
       "holds": true,
       "why": ""
     },
@@ -160,8 +160,8 @@
     },
     {
       "property": "regression from the last card",
-      "measured": "exam: golden 91.6% -> 89.2%; holdout 77.5% -> 73.8%",
-      "holds": false,
+      "measured": "none",
+      "holds": true,
       "why": "tolerance 2%"
     }
   ]
