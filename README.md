@@ -130,6 +130,18 @@ engagement would have a name on each. `fde history`
 ([`field/history.txt`](field/history.txt)) is the same record as one page,
 in order.
 
+**The debt.** 0.1.30 added an eighth gate, the outcome contract: who owns
+the number the system exists to move, its value today, its target, how it
+is measured, by when. On this record it is waived, with the reason where a
+reader will find it: the brief names the number (median time to first
+substantive reply, 26 hours, stated) but nobody at the bank set a target,
+and there is no bank. `fde debt` ([`field/debt.txt`](field/debt.txt)) then
+lists what the engagement rests on that nobody has settled: 13 items --
+two standing waivers, five entries with nobody's name on them, three roles
+never heard, and three environment facts the platform lead said and nobody
+measured (no accelerator, no cluster, no container competence). None
+blocks the build or production; the waivers age from today.
+
 **What this is and is not.** The deployment is a laptop and the record says
 so in the attestation itself. Both streams are the vendor's public test
 split, not the bank's traffic, and the campaign is a drill: five queues
@@ -181,7 +193,7 @@ holdout from 73.7% to 77.5% in two rounds.
 
 ```bash
 python3 prepare.py                                   # fetches Banking77 into engagement-prep/
-python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.29"
+python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.31"
 venv/bin/fde start banking --statement "Route each inbound customer support message to one of seventy-seven handling queues by intent."
 venv/bin/fde frame banking --file brief.md
 venv/bin/fde samples banking --file engagement-prep/pairs.jsonl
@@ -197,6 +209,7 @@ venv/bin/fde incident banking close inc-001 --note "what was done"
 venv/bin/fde value banking --project project --hourly-cost 30 --review-share 0.2
 venv/bin/fde outcomes banking --project project
 venv/bin/fde stakeholders banking && venv/bin/fde history banking
+venv/bin/fde debt banking                # what nobody has settled, with an owner and an age
 ```
 
 The eval files embed the dataset's text and are not committed; they

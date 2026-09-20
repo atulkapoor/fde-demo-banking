@@ -12,6 +12,14 @@ overrides:
     interview scheduled
   at: '2026-09-19'
   against: Nobody has been named who can say what separates acceptable from excellent.
+- gate: outcome_contract
+  reason: 'the brief names the number (median time to first substantive reply, 26
+    hours, stated by the support lead) but nobody at the bank has set a target, and
+    there is no bank: this is a public demonstration on the vendor''s dataset'
+  at: '2026-09-20'
+  against: 'Nobody has agreed which number this system exists to move: no outcome
+    contract was recorded.'
+  by: the author
 deployed:
   note: served on the author's laptop over HTTP on 127.0.0.1 by the author, for the
     field drill; the bank's VPC is not on this record
