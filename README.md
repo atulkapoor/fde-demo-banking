@@ -41,11 +41,11 @@ at the default margin, [`SCORECARD.md`](project-0.1.27-agent/SCORECARD.md) at th
 
 | | Shipped baseline, no agent (`project-0.1.27`) | After the implement loop (`project-0.1.27-agent`) | Same, at a 1.0-nat abstain margin |
 |---|---|---|---|
-| Scorecard | 22 of 24 rows hold | 23 of 24 | 22 of 24 |
+| Scorecard | 22 of 24 rows hold | 23 of 24 | 23 of 25 (re-scored on 0.1.35: [`field/rescore-0.1.35.txt`](field/rescore-0.1.35.txt)) |
 | Golden, in-sample | 84.1% (abstained 10%) | 91.6% (abstained 4.3%) | -- |
 | **Holdout, 3,036 cases never shipped** | 73.7%, abstaining 16.1%, **87.9% on the answered** | 77.5%, abstaining 10.5%, **86.6% on the answered** | 73.8%, abstaining 18.2%, **90.2% on the answered** |
 | **Vendor test split, 3,079 cases (external exam)** | 72.2% | **75.8%** | 71.6% |
-| Beats the bank's recorded 88% first-pass accuracy on the answered | no, by 0.1 point | no, by 1.4 points | **yes** |
+| Beats the bank's recorded 88% first-pass accuracy on the answered | no, by 0.1 point | no, by 1.4 points | on accuracy yes (90.2%); **on coverage no**: 81.8% answered against the 97% the bank's own exception rate sets |
 | Generalisation gap (golden in-sample minus holdout) | 10.4 points | 14.2 points | -- |
 | Adversarial probes, 11 | 10 of 11, one abstained under mutation | 11 of 11, none followed | -- |
 | A valid request through the edge answers, and says why | yes | yes | yes |
@@ -164,6 +164,22 @@ never heard, and three environment facts the platform lead said and nobody
 measured (no accelerator, no cluster, no container competence). None
 blocks the build or production; the waivers age from today.
 
+**The coverage rule.** 0.1.35 closed a loophole an outside reading found:
+the card's baseline row held on accuracy on what the system answered, with
+no coverage requirement, so a router that abstained on nine cases in ten
+and got the tenth right would have "beaten" the bank. The row now judges
+both axes, and the coverage floor comes from the bank's own record: its
+people hand 3% of messages to the unknown queue, so the system may hand on
+no more than that. Re-scored at the shipped margin the row reads: 90.2% on
+the answered against 88.0%, coverage 81.8% against a floor of 97.0%,
+n=3,036, correct 2,240, wrong 244, abstained 552, overall 73.8%, 95%
+interval 88.9% to 91.3% on the answered -- and does not hold. So the
+honest sentence about this deliverable is now: it routes what it routes
+better than the bank's people do, and it routes less of it. Both stop
+conditions still clear, because the author set the abstention condition at
+25%, not at the bank's 3%; a client would set that number, and the card
+would then say the same thing the stop condition does.
+
 **What this is and is not.** The deployment is a laptop and the record says
 so in the attestation itself. Both streams are the vendor's public test
 split, not the bank's traffic, and the campaign is a drill: five queues
@@ -215,13 +231,13 @@ holdout from 73.7% to 77.5% in two rounds.
 
 ```bash
 python3 prepare.py                                   # fetches Banking77 into engagement-prep/
-python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.33"
+python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.35"
 venv/bin/fde start banking --statement "Route each inbound customer support message to one of seventy-seven handling queues by intent."
 venv/bin/fde frame banking --file brief.md
 venv/bin/fde samples banking --file engagement-prep/pairs.jsonl
 venv/bin/fde baseline banking --file baseline.yaml   # then data-access, security-review, waive, ask (see engagements/banking/)
 venv/bin/fde build banking --out project
-venv/bin/fde scorecard project --holdout engagements/banking/artifacts/holdout.jsonl --external engagement-prep/vendor-test.jsonl
+venv/bin/fde scorecard project --holdout engagements/banking/artifacts/holdout.jsonl --external engagement-prep/vendor-test.jsonl --coverage-floor 0.97   # the bank's own exception rate is 3%
 
 # the operating loop: boot the service, send traffic, keep its journal (stderr), then
 venv/bin/fde stage banking --project project

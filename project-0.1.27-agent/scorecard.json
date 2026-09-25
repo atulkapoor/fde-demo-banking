@@ -1,10 +1,10 @@
 {
   "project": "/Users/atulkapoor/Documents/fde-demo-banking/project-0.1.27-agent",
-  "verdict": "22 of 24 measured properties hold",
+  "verdict": "23 of 25 measured properties hold",
   "rows": [
     {
       "property": "own tests",
-      "measured": "7 passed in 3.46s",
+      "measured": "7 passed in 3.85s",
       "holds": true,
       "why": "the deliverable's own smoke and edge tests, model-free"
     },
@@ -64,21 +64,27 @@
     },
     {
       "property": "generalisation gap",
-      "measured": "golden 89.2% - holdout 73.8% = +15.4%",
+      "measured": "golden 89.2% - holdout 73.8% = +15.4% against 20% (the protocol's default)",
       "holds": true,
-      "why": "past 20% the golden score describes the exam, not the system; a component that reads the holdout file defeats this row, which is what --external is for"
+      "why": "past the limit the golden score describes the exam, not the system; a component that reads the holdout file defeats this row, which is what --external is for; tighten the limit with --max-gap"
     },
     {
       "property": "beats the baseline error rate",
-      "measured": "90.2% on the answered against a recorded first-pass accuracy of 88.0%, abstaining 18.2%",
-      "holds": true,
-      "why": "evals/acceptance.md: the baseline's error rate is the number to beat; measured on what the system answered, with the abstained share beside it"
+      "measured": "90.2% on the answered against 88.0%; coverage 81.8% against a floor of 97.0% (set by the engagement); n=3036, correct=2240, wrong=244, abstained=552; overall 73.8%; 95% 88.9% to 91.3% on the answered",
+      "holds": false,
+      "why": "accuracy on the answered and coverage must both clear; the people's own hand-on share is the floor unless the engagement sets one"
     },
     {
       "property": "external exam",
-      "measured": "71.6% on 3079 cases (majority 1.3%)",
+      "measured": "71.6% on 3079 cases (majority 1.3%; abstained 20.1%, 89.7% on the answered)",
       "holds": true,
       "why": ""
+    },
+    {
+      "property": "external exam: sample size",
+      "measured": "3079 cases",
+      "holds": true,
+      "why": "the protocol's floor for a blind sample is 30, for the external set as for the holdout; three right answers out of four is not generalisation"
     },
     {
       "property": "edge: boots",
@@ -160,8 +166,8 @@
     },
     {
       "property": "regression from the last card",
-      "measured": "exam: golden 91.6% -> 89.2%; holdout 77.5% -> 73.8%",
-      "holds": false,
+      "measured": "none",
+      "holds": true,
       "why": "tolerance 2%"
     }
   ]

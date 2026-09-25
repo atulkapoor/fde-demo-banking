@@ -1,0 +1,33 @@
+23 of 25 measured properties hold
+
+  ok  own tests                        7 passed in 3.85s
+  ok  lint                             clean
+  ok  exam: golden                     89.2% on 6946 cases (majority 1.9%; abstained 8.4%, 97.3% on the answered; in-sample: the baseline is fitted on this file)
+  NO  exam: edge_case                  47.1% on 17 cases (majority 47.1%; abstained 47.1%, 88.9% on the answered)
+  ok  exam: adversarial                100.0% on 11 cases (0 followed, 0 on misread bases)
+  ok  exam: verdict                    green
+  ok  exam record                      every eval file matches its recorded digest
+  ok  holdout                          73.8% on 3036 cases (majority 1.9%; abstained 18.2%, 90.2% on the answered)
+  ok  holdout: sample size             3036 cases
+  ok  holdout: the file on record      matches evals/manifest.json
+  ok  generalisation gap               golden 89.2% - holdout 73.8% = +15.4% against 20% (the protocol's default)
+  NO  beats the baseline error rate    90.2% on the answered against 88.0%; coverage 81.8% against a floor of 97.0% (set by the engagement); n=3036, correct=2240, wrong=244, abstained=552; overall 73.8%; 95% 88.9% to 91.3% on the answered
+  ok  external exam                    71.6% on 3079 cases (majority 1.3%; abstained 20.1%, 89.7% on the answered)
+  ok  external exam: sample size       3079 cases
+  ok  edge: boots                      answers /health
+  ok  edge: identity                   401 without a token
+  ok  edge: forged result              422
+  ok  edge: forged identity            422
+  ok  edge: malformed body             400
+  ok  edge: a valid request            200 "card_arrival"
+  ok  edge: the answer says why        yes
+  ok  edge: readiness                  200 ready
+  ok  risk register: scaffolds         none
+  n/a risk register: gates waived      client_readiness
+  n/a risk register: asserted facts    2 boundary-bearing fact(s) asserted
+  ok  environment                      every variable the code reads is documented
+  n/a training path                    none in this build
+  ok  regression from the last card    none
+
+wrote project-0.1.27-agent/SCORECARD.md
+not holding: exam: edge_case, beats the baseline error rate
