@@ -1,0 +1,11 @@
+$ fde predict engagements/banking --when field_abstain_rate <= 0.22 --when field_abstain_rate >= 0.16 --when field_error_rate < 0.01 --when field_mix_distance < 0.15 --project project-0.1.27-agent --by the author --today 2026-09-25
+recorded 4 forecast(s)
+  made after a card existed for this project: kept, and marked as such -- a forecast written after the number is not a forecast
+  ?   field_abstain_rate <= 0.22           not measured on the record  [made after a card existed]
+  ?   field_abstain_rate >= 0.16           not measured on the record  [made after a card existed]
+  ?   field_error_rate < 0.01              not measured on the record  [made after a card existed]
+  ?   field_mix_distance < 0.15            not measured on the record  [made after a card existed]
+
+4 forecast(s): 0 held, 0 missed, 4 not measured
+[exit 0]
+

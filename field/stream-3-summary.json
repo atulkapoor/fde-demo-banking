@@ -1,0 +1,16 @@
+{
+  "cases": 3079,
+  "status_codes": {
+    "200": 3079
+  },
+  "answered": 3079,
+  "abstained": 620,
+  "abstain_rate": 0.2014,
+  "correct_on_answered": 2206,
+  "accuracy_on_answered": 0.8971,
+  "accuracy_overall": 0.7165,
+  "distinct_labels": 77,
+  "seconds": 2.4,
+  "requests_per_second": 1287.3,
+  "abstain_margin": "1.0"
+}

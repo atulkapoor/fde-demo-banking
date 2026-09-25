@@ -1,0 +1,4 @@
+{"condition": "field_abstain_rate <= 0.22", "at": "2026-09-25", "after_scoring": true, "by": "the author", "project": "project-0.1.27-agent"}
+{"condition": "field_abstain_rate >= 0.16", "at": "2026-09-25", "after_scoring": true, "by": "the author", "project": "project-0.1.27-agent"}
+{"condition": "field_error_rate < 0.01", "at": "2026-09-25", "after_scoring": true, "by": "the author", "project": "project-0.1.27-agent"}
+{"condition": "field_mix_distance < 0.15", "at": "2026-09-25", "after_scoring": true, "by": "the author", "project": "project-0.1.27-agent"}

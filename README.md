@@ -93,6 +93,7 @@ cue tokens, never the message).
 |---|---|---|---|---|
 | 1: the vendor's test split, 3,079 messages across all 77 queues ([summary](field/stream-1-summary.json)) | 3,079, all 200 | 11.5% | 85.7% (75.8% overall, the card's external-exam figure to the decimal) | none: mix distance 0.08 from the golden, abstention 11.5% against 10.5% on the holdout |
 | 2: a card-reissue campaign -- 200 messages from five card queues only ([summary](field/stream-2-summary.json)) | 200, all 200 | 12.0% | 81.8% | **decision mix**: distance 0.81 from the golden; `inc-001` opened |
+| 3: the vendor's split again, at the shipped 1.0-nat margin ([summary](field/stream-3-summary.json)) | 3,079, all 200 | 20.1% | 89.7% (the card's external row to the decimal) | none; four forecasts held, see below |
 
 **The trail.** `fde stage` computed each stage off the record and appended
 every transition:
@@ -180,6 +181,20 @@ conditions still clear, because the author set the abstention condition at
 25%, not at the bank's 3%; a client would set that number, and the card
 would then say the same thing the stop condition does.
 
+**The forecast.** 0.1.36 lets an engagement say what it expects before it
+measures, and be held to it. Four forecasts went on this record before
+stream 3 ran ([`field/forecast-1.txt`](field/forecast-1.txt)): the field
+abstain rate between 16% and 22%, the field error rate under 1%, the
+decision mix within 0.15 of the golden. Stream 3 was then driven through
+the service at the shipped margin and the forecasts scored
+([`field/forecast-2.txt`](field/forecast-2.txt)): all four held, mean
+signed error -0.011. Every one of them is marked *made after a card
+existed*, and that mark is the point: the card's external row had already
+shown 20.1% abstention at this margin, so these were informed guesses
+about whether the service in the field matches the card, not forecasts
+about an unknown. The first uninformed forecast belongs to the first
+engagement that records one before its build is scored.
+
 **What this is and is not.** The deployment is a laptop and the record says
 so in the attestation itself. Both streams are the vendor's public test
 split, not the bank's traffic, and the campaign is a drill: five queues
@@ -231,7 +246,7 @@ holdout from 73.7% to 77.5% in two rounds.
 
 ```bash
 python3 prepare.py                                   # fetches Banking77 into engagement-prep/
-python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.35"
+python3 -m venv venv && venv/bin/pip install "fde-framework>=0.1.36"
 venv/bin/fde start banking --statement "Route each inbound customer support message to one of seventy-seven handling queues by intent."
 venv/bin/fde frame banking --file brief.md
 venv/bin/fde samples banking --file engagement-prep/pairs.jsonl
@@ -249,6 +264,7 @@ venv/bin/fde outcomes banking --project project
 venv/bin/fde stakeholders banking && venv/bin/fde history banking
 venv/bin/fde debt banking                # what nobody has settled, with an owner and an age
 venv/bin/fde stop-when banking --when "answered_accuracy < 0.88" --project project   # exit 1 and a STOP stage when it fires
+venv/bin/fde predict banking --when "field_abstain_rate <= 0.22" --project project    # before the stream; then --journal <log> to score it
 ```
 
 The eval files embed the dataset's text and are not committed; they
