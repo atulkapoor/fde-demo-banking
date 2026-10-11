@@ -143,6 +143,26 @@ eighth gate's reason changed, the waiver granted against the old reason
 lapsed, and the stage dropped to discovery. 0.1.33 fixed it, with a test,
 and the one stray transition was removed from the trail.
 
+**The build the record reads.** Writing the decision brief (below) found
+a second defect, this time in the record's default: read without
+`--project`, the stage computed as *stopped*, because the last-built
+marker named the emitted project (`project-0.1.27`, card 0.879 on the
+answered) while the build actually served is the implemented copy beside
+it (`project-0.1.27-agent`, 0.902). Nothing had named the deployment's
+build. 0.1.46 made `fde deployed --project` record it and every default
+read follow it; the attestation here was re-recorded on 2026-10-12 with
+its original note and date, now signed and naming `project-0.1.27-agent`,
+and the record reads production with both conditions clear
+([`engagements/banking/gates.yaml`](engagements/banking/gates.yaml)).
+
+**The decision brief.** `fde report` writes the record as one document
+for a reader who never sees the terminal -- the problem as stated, the
+stage, what is known and who said it, the design with its reasons and
+rejections, what it rests on and what was waived, the debt, the stop
+conditions, who has been heard, the next decision:
+[`engagements/banking/artifacts/REPORT.md`](engagements/banking/artifacts/REPORT.md),
+written 2026-10-12 from the record as it stands.
+
 **The people.** `fde stakeholders` ([`field/stakeholders.txt`](field/stakeholders.txt))
 reads the engagement's people off the record: two of the five roles were
 heard, both voiced by the author (the README's "Facts" row says so, and the

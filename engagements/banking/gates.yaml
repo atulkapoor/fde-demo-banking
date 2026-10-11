@@ -24,3 +24,5 @@ deployed:
   note: served on the author's laptop over HTTP on 127.0.0.1 by the author, for the
     field drill; the bank's VPC is not on this record
   at: '2026-09-20'
+  project: project-0.1.27-agent
+  by: the author
